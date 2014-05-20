@@ -1,11 +1,10 @@
 // secret number, guess numbers, hotter/colder, guess counts need to be global variables
 // warmer returns 1, colder returns 2, exact guess returns 0
-var secretNumber, guessNumber, counter, count = 0;
+var secretNumber, guessNumber, count = 0;
 
 $(document).ready(function(){
 
 	secretNumber = Number($('#secretNumber').text());
-	// guessNumber = Number($('#userGuess').val());
 
 	newGame();
 
@@ -64,7 +63,8 @@ function makeGuess(event) {
 	guessNumber = $('#userGuess').val();
 
 	// lastGuess is for storing the most recent guess for comparison with guessNumber
-	var lastGuess = guessNumber;
+	var lastGuess = Math.abs((Number($('#guessList li').last().text())) - secretNumber);
+	var currentGuess = Math.abs(Number(guessNumber - secretNumber));
 
 	if (guessNumber == secretNumber) {
 		feedback.text("Correct!");
@@ -75,7 +75,21 @@ function makeGuess(event) {
 		// provide guess feedback
 		console.log("guessNumber is: " + guessNumber);
 		console.log("secretNumber is: " + secretNumber);
-		feedback.text("Incorrect! Try again!");
+
+		if ( count == 0) {
+			if ( guessNumber < secretNumber) {
+				feedback.text("Too low!");
+			} else {
+				feedback.text("Too high!");
+			}
+		} else {
+			// "warmer" or "cooler" code goes here
+			if (lastGuess > currentGuess) {
+				feedback.text("Getting warmer!");
+			} else {
+				feedback.text("Getting cooler!");
+			}
+		}
 
 		// add guess to #guessList and reset input
 		$('#guessList').append('<li>' + guessNumber + '</li>');
@@ -84,15 +98,5 @@ function makeGuess(event) {
 		// increment count
 		count++;
 		$('#count').text(count);
-		console.log("Count is: " + count);
 	}
 }
-
-// function checkGuess(guessNumber, secretNumber, counter) {
-	
-// 	var x;
-
-// 	if (guessNumber === secretNumber) {
-
-// 	}
-// }
