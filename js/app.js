@@ -1,10 +1,11 @@
 // secret number, guess numbers, hotter/colder, guess counts need to be global variables
 // warmer returns 1, colder returns 2, exact guess returns 0
-var secretNumber = Number($('#secretNumber').text());
-var guessNumber = Number($('#userGuess').val());
-var counter = 0
+var secretNumber, guessNumber, counter, count = 0;
 
 $(document).ready(function(){
+
+	secretNumber = Number($('#secretNumber').text());
+	// guessNumber = Number($('#userGuess').val());
 
 	newGame();
 
@@ -33,7 +34,16 @@ function newGame() {
 	$('#guessList').empty()
 
 	// set guess count to 0
-	$('#count').val(0);
+	$('#count').text("0");
+
+	// clear guess input
+	$('#userGuess').val(" ")
+
+	// restore #feedback to default
+	$('#feedback').text("Make your Guess!");
+
+	// reset CSS props
+	$('#userGuess').css('display', 'block');
 
 	// generate secret number
 	numberGenerator();
@@ -51,16 +61,31 @@ function makeGuess(event) {
 	event.preventDefault();
 
 	var feedback = $('#feedback');
+	guessNumber = $('#userGuess').val();
 
-	if (count == 0) {
-		if (guessNumber !== secretNumber) {
-			feedback.text("Incorrect! Try again!");
-			count = count++;
-			return count;
-		}
-	} 
+	// lastGuess is for storing the most recent guess for comparison with guessNumber
+	var lastGuess = guessNumber;
 
+	if (guessNumber == secretNumber) {
+		feedback.text("Correct!");
 
+		// force user to start new game
+		$('#userGuess').toggle();
+	} else {
+		// provide guess feedback
+		console.log("guessNumber is: " + guessNumber);
+		console.log("secretNumber is: " + secretNumber);
+		feedback.text("Incorrect! Try again!");
+
+		// add guess to #guessList and reset input
+		$('#guessList').append('<li>' + guessNumber + '</li>');
+		$('#userGuess').val(' ');
+
+		// increment count
+		count++;
+		$('#count').text(count);
+		console.log("Count is: " + count);
+	}
 }
 
 // function checkGuess(guessNumber, secretNumber, counter) {
