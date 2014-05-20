@@ -1,10 +1,11 @@
 // secret number, guess numbers, hotter/colder, guess counts need to be global variables
 // warmer returns 1, colder returns 2, exact guess returns 0
-var secretNumber, guessNumber, count = 0;
+var secretNumber, guessNumber, guessList, count = 0;
 
 $(document).ready(function(){
 
 	secretNumber = Number($('#secretNumber').text());
+	guessList = [];
 
 	newGame();
 
@@ -36,7 +37,7 @@ function newGame() {
 	$('#count').text("0");
 
 	// clear guess input
-	$('#userGuess').val(" ")
+	$('#userGuess').val("")
 
 	// restore #feedback to default
 	$('#feedback').text("Make your Guess!");
@@ -93,10 +94,26 @@ function makeGuess(event) {
 
 		// add guess to #guessList and reset input
 		$('#guessList').append('<li>' + guessNumber + '</li>');
+		guessList.push(guessNumber);
 		$('#userGuess').val(' ');
 
 		// increment count
 		count++;
 		$('#count').text(count);
 	}
+}
+
+function checkGuess() {
+	if (guessNumber === undefined || guess === null || guess.trim().length === 0 || 
+		!isInteger(guessNumber) || guessNumber < 1 || guessNumber > 100) {
+		alert("Please enter an integer between 1 and 100.");
+		return false;
+	}
+
+	if ($.inArray(guessNumber, guessList) !== -1) {
+		alert("You have already guessed " + guessNumber + "!");
+		return false;
+	}
+
+	return true;
 }
