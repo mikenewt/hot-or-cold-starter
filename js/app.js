@@ -1,3 +1,8 @@
+// secret number, guess numbers, hotter/colder, guess counts need to be global variables
+// warmer returns 1, colder returns 2, exact guess returns 0
+var secretNumber = Number($('#secretNumber').text());
+var guessNumber = Number($('#userGuess').val());
+var counter = 0
 
 $(document).ready(function(){
 
@@ -6,7 +11,6 @@ $(document).ready(function(){
 	/*--- Display information modal box ---*/
   	$(".what").click(function(){
     	$(".overlay").fadeIn(1000);
-
   	});
 
   	/*--- Hide information modal box ---*/
@@ -15,17 +19,10 @@ $(document).ready(function(){
   	});
 
   	/*--- Start new game ---*/
-  	$(".new").click(newGame);
+  	$("#newGame").click(newGame);
 
   	/*--- Guessing ---*/
-  	$('#guessButton').on('click', function(e) {
-  		e.preventDefault();
-		var guess = Number($(this).text());
-		console.log(guess);
-
-		var secretNumber = Number($('#secretNumber').text());
-		console.log(secretNumber);
-  	});
+	$("#guessButton").click(makeGuess);
 
 });
 
@@ -43,17 +40,34 @@ function newGame() {
 }
 
 function numberGenerator() {
-	var secretNumber = Math.floor((Math.random() * 100) + 1);
+
+	secretNumber = Math.floor((Math.random() * 100) + 1);
 	$('<li id="secretNumber" style="display:none">' + secretNumber + '</li>').appendTo('#guessList');
+	return secretNumber;
 }
 
-function makeGuess() {
+function makeGuess(event) {
 
-	// store guess in variable
-	var guess = Number($(this).val());
-	console.log(guess);
+	event.preventDefault();
 
-	// retrieve secret number
-	var secretNumber = Number($('secretNumber').text());
-	console.log(secretNumber);
+	var feedback = $('#feedback');
+
+	if (count == 0) {
+		if (guessNumber !== secretNumber) {
+			feedback.text("Incorrect! Try again!");
+			count = count++;
+			return count;
+		}
+	} 
+
+
 }
+
+// function checkGuess(guessNumber, secretNumber, counter) {
+	
+// 	var x;
+
+// 	if (guessNumber === secretNumber) {
+
+// 	}
+// }
