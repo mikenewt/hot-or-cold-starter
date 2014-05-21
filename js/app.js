@@ -93,9 +93,21 @@ function makeGuess(event) {
 		}
 
 		// add guess to #guessList and reset input
+		if (!checkGuess()) {
+			$('#userGuess').val('');
+			$('#guessList').empty();
+			$('#count').text(count);
+			if (guessList.length > 0) {
+				for(var i =0; i < guessList.length; i++) {
+					var listItem = "<li>" + guessList[i] + "</li>";
+					$('#guessList').append(listItem);
+				}
+			}
+		}
 		$('#guessList').append('<li>' + guessNumber + '</li>');
 		guessList.push(guessNumber);
-		$('#userGuess').val(' ');
+		$('#userGuess').val('');
+		$('#userGuess').focus();
 
 		// increment count
 		count++;
@@ -104,7 +116,7 @@ function makeGuess(event) {
 }
 
 function checkGuess() {
-	if (guessNumber === undefined || guess === null || guess.trim().length === 0 || 
+	if (guessNumber === undefined || guessNumber === null || guessNumber.trim().length === 0 || 
 		!isInteger(guessNumber) || guessNumber < 1 || guessNumber > 100) {
 		alert("Please enter an integer between 1 and 100.");
 		return false;
@@ -116,4 +128,14 @@ function checkGuess() {
 	}
 
 	return true;
+
+	function isInteger() {
+		if (isNaN(guessNumber)) {
+			return false;
+		}
+		if (guessNumber % 1 !== 0) {
+			return false;
+		}
+		return true;
+	}
 }
