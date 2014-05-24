@@ -77,6 +77,22 @@ function makeGuess(event) {
 		console.log("guessNumber is: " + guessNumber);
 		console.log("secretNumber is: " + secretNumber);
 
+		// add guess to #guessList and reset input
+		if (checkGuess()) {
+
+			$('#userGuess').val('');
+			$('#guessList').empty();
+
+			if (guessList.length > 0) {
+				for(var i = 0; i < guessList.length; i++) {
+					var listItem = "<li>" + guessList[i] + "</li>";
+					$('#guessList').append(listItem);
+				}
+			}
+		} else {
+			return false;
+		}
+
 		if ( count == 0) {
 			if ( guessNumber < secretNumber) {
 				feedback.text("Too low!");
@@ -133,9 +149,17 @@ function checkGuess() {
 		if (isNaN(guessNumber)) {
 			return false;
 		}
+<<<<<<< HEAD
 		if (guessNumber % 1 !== 0) {
 			return false;
 		}
+=======
+
+		if (guessNumber % 1 !== 0) {
+			return false;
+		}
+
+>>>>>>> master
 		return true;
 	}
 }
